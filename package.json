@@ -239,6 +239,8 @@
     "lint:fix": "eslint . --ext .js,.vue --fix",
     "lint:css": "stylelint './app/assets/stylesheets/**/*.scss'",
     "bump": "npm --no-git-tag-version version prerelease --preid=assets",
+    "preinstall": "git config --global url.'https://'.insteadOf 'git://'",
+    "postinstall": "git config --global --unset url.'https://'.insteadOf",
     "postversion": "git add package.json package-lock.json && git commit -m 'Bump assets version' && git push",
     "update-internal-deps": "rm -rf node_modules && npm install",
     "branch-files": "node lib/build/branchFiles/branchFiles.js",
