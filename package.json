@@ -229,6 +229,8 @@
     "npm": "^6.4.1"
   },
   "scripts": {
+    "preinstall": "git config --global url.'https://'.insteadOf 'git://'",
+    "postinstall": "git config --global --unset url.'https://'.insteadOf",
     "start": "npm run carto-node && npm run build:static && npm run dev",
     "ci": "npm run lint:css && npm run test",
     "test": "grunt test && npm run test:new_dashboard:ci",
