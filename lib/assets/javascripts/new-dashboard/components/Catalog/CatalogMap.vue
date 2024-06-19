@@ -32,7 +32,7 @@
 import { mapState } from 'vuex';
 import mapboxgl from 'mapbox-gl';
 import { Deck } from '@deck.gl/core';
-import { CartoLayer, BASEMAP, MAP_TYPES, API_VERSIONS } from '@deck.gl/carto';
+import { VectorTileLayer, vectorTilesetSource, BASEMAP } from '@deck.gl/carto';
 
 import { generateColorStyleProps, resetColorStyleProps } from './map-styles/colorStyles';
 import { getQuantiles, formatNumber, capitalize, compare } from './map-styles/utils';
@@ -170,6 +170,12 @@ export default {
       getTooltip: this.getTooltip
     });
 
+    this.tilesetSource = vectorTilesetSource({
+      accessToken: window.accessToken,
+      connectionName: 'carto_dw',
+      tableName: this.tilesetSampleId
+    });
+
     this.renderLayer();
   },
   methods: {
@@ -201,15 +207,8 @@ export default {
     },
     renderLayer () {
       const layers = [
-        new CartoLayer({
-          data: this.tilesetSampleId,
-          type: MAP_TYPES.TILESET,
-          credentials: {
-            apiVersion: API_VERSIONS.V2,
-            username: this.username || 'public',
-            apiKey: 'default_public',
-            ...(this.mapUrl && { mapsUrl: this.mapUrl })
-          },
+        new VectorTileLayer({
+          data: this.tilesetSource,
           ...styleProps.deck,
           lineWidthUnits: 'pixels',
           pointRadiusUnits: 'pixels',
@@ -228,7 +227,6 @@ export default {
             this.setGeomType(tilestats);
             this.setVariable(tilestats);
             this.setStyleProps();
-            this.renderLayer();
             this.showMap = true;
           }
         })
