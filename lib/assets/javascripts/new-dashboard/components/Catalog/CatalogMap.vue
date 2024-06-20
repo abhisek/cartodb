@@ -172,6 +172,7 @@ export default {
 
     this.tilesetSource = vectorTilesetSource({
       accessToken: window.accessToken,
+      ...(window.apiBaseUrl && { apiBaseUrl: window.apiBaseUrl }),
       connectionName: 'carto_dw',
       tableName: this.tilesetSampleId
     });
